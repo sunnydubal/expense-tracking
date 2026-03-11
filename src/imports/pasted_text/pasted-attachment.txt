@@ -1,0 +1,199 @@
+# Figma Design Prompt — Expense Tracker App
+
+## Overview
+Design a fully responsive, dark-themed Expense Tracker web application UI. The design should feel modern, clean, and data-rich — similar to a fintech dashboard. All screens should be designed for desktop (1440px wide) with a mobile-responsive version (375px wide).
+
+---
+
+## Color Palette
+| Token | Hex |
+|---|---|
+| Background | #0f1117 |
+| Card | #1a1d27 |
+| Card Secondary | #22263a |
+| Accent Purple | #6c63ff |
+| Accent Pink | #ff6584 |
+| Green (Income) | #43e97b |
+| Red (Expense) | #ff6584 |
+| Yellow (Balance) | #f9ca24 |
+| Text Primary | #e0e0e0 |
+| Text Muted | #8888aa |
+| Border | #2e3150 |
+
+---
+
+## Typography
+- Font Family: **Segoe UI** (or Inter as alternative)
+- Page Title: 26px, Bold, Gradient text (left to right: #6c63ff → #ff6584)
+- Section Labels: 11px, Uppercase, Letter-spacing 0.08em, Muted color (#8888aa)
+- Card Values: 26px, Bold
+- Body / Input Text: 15px, Regular
+- Meta / Small Text: 12px, Regular, Muted
+
+---
+
+## Layout Structure (Desktop — 1440px)
+
+### 1. Header Bar
+- Full width, background: gradient from #1a1d27 to #22263a
+- Bottom border: 1px solid #2e3150
+- Padding: 24px 32px
+- Left: App title "💰 Expense Tracker" with gradient text
+- Right: "Filter Month" label + dropdown selector (background #22263a, border #2e3150, border-radius 8px)
+
+---
+
+### 2. Summary Cards Row
+- 4 cards in a horizontal row, equal width, responsive grid
+- Padding: 24px 32px (from page edge)
+- Gap between cards: 16px
+- Each card:
+  - Background: #1a1d27
+  - Border: 1px solid #2e3150
+  - Border-radius: 16px
+  - Padding: 20px
+  - Label (top): uppercase, 11px, muted color
+  - Value (bottom): 26px bold
+
+| Card | Value Color |
+|---|---|
+| Total Income | #43e97b (Green) |
+| Total Expenses | #ff6584 (Red) |
+| Balance | #f9ca24 (Yellow) |
+| Transactions | #6c63ff (Purple) |
+
+---
+
+### 3. Main Content Area (Two Column Grid)
+- Padding: 24px 32px
+- Left column: 340px fixed width
+- Right column: fills remaining space
+- Gap: 24px
+
+---
+
+#### LEFT COLUMN — Add Transaction Form Card
+- Background: #1a1d27, border: 1px solid #2e3150, border-radius: 16px, padding: 24px
+- Title: "+ Add Transaction" in accent purple #6c63ff, 15px bold
+
+**Type Toggle (two buttons side by side):**
+- "⬇ Expense" button — active state: background #ff658422, border #ff6584, text #ff6584
+- "⬆ Income" button — active state: background #43e97b22, border #43e97b, text #43e97b
+- Inactive state: background #22263a, border #2e3150, text muted
+- Border-radius: 10px, padding: 10px
+
+**Form Fields (stacked vertically, gap 14px each):**
+Each field has:
+- Label: 11px uppercase muted text above
+- Input/Select: background #22263a, border 1px solid #2e3150, border-radius 10px, padding 10px 14px, 15px text
+- Focus state: border changes to #6c63ff
+
+Fields:
+1. Description — text input, placeholder "e.g. Grocery Shopping"
+2. Amount (₹) — number input, placeholder "0.00"
+3. Category — dropdown with emoji options: 🍔 Food, 🚗 Transport, 💡 Bills, 🛍 Shopping, ❤️ Health, 🎮 Entertainment, 📚 Education, 💼 Salary, 📦 Other
+4. Date — date picker input
+
+**Submit Button:**
+- Full width, padding 12px
+- Background: gradient 135deg from #6c63ff to #ff6584
+- Border-radius: 10px, text white, 16px bold
+- Label: "Add Transaction"
+- Hover state: opacity 0.85
+
+---
+
+#### RIGHT COLUMN — Three Stacked Sections
+
+**Section A: Charts Row (Two Side-by-Side Chart Cards)**
+- Two equal cards side by side, gap 16px
+- Each card: background #1a1d27, border #2e3150, border-radius 16px, padding 20px
+- Card title: 11px uppercase muted, margin-bottom 14px
+- Chart area height: 200px
+
+Chart 1 — "By Category" (Doughnut Chart):
+- Show expense breakdown by category
+- Each segment colored by category color (Food:#ff6584, Transport:#36a2eb, Bills:#ffce56, Shopping:#9b59b6, Health:#43e97b, Entertainment:#f9ca24, Education:#6c63ff, Salary:#1abc9c, Other:#8888aa)
+- Legend at bottom, small font, muted labels
+
+Chart 2 — "Monthly Trend" (Bar Chart):
+- Show monthly expense totals
+- Bar color: #6c63ff88 fill, #6c63ff border, border-radius 6px on bars
+- Axes: muted text #aaa, grid lines #2e3150
+- No legend
+
+---
+
+**Section B: Transactions List Card**
+- Background #1a1d27, border #2e3150, border-radius 16px, padding 20px
+
+List Header (flex row, space between):
+- Left: "Transactions" label — 11px uppercase muted
+- Right: Two filter dropdowns side by side
+  - "All Categories" dropdown
+  - "All Types" dropdown
+  - Style: background #22263a, border #2e3150, border-radius 8px, 13px text
+
+Transaction List (scrollable, max-height 340px):
+Each transaction item:
+- Background: #22263a, border: 1px solid #2e3150, border-radius 12px, padding 12px 14px
+- Hover: border changes to #6c63ff
+- Layout (left to right):
+  1. Category Icon Box (38x38px, border-radius 10px, background = category color at 13% opacity, emoji centered inside)
+  2. Info block (flex 1):
+     - Transaction name: 15px, medium weight
+     - Meta line: "Category • DD Mon YYYY", 12px muted
+  3. Amount: bold, 16px — red with "−" prefix for expense, green with "+" for income
+  4. Edit button: ✏️ emoji icon, no background, muted color, turns accent on hover
+  5. Delete button: 🗑️ emoji icon, no background, muted color, turns red on hover
+
+---
+
+### 4. Edit Transaction Modal (Overlay)
+- Overlay: full screen, background #00000088
+- Modal card: centered, width 360px, background #1a1d27, border #2e3150, border-radius 18px, padding 28px
+- Title: "✏️ Edit Transaction", accent purple, 15px bold
+- Same Type Toggle as the form
+- Same 4 form fields as the add form
+- Two buttons at bottom (side by side):
+  - "Cancel" — background #22263a, border #2e3150, text white
+  - "Save Changes" — background #6c63ff, text white
+  - Both: border-radius 10px, padding 10px, bold
+
+---
+
+## Component States to Design
+- Form input: default, focused, filled
+- Type toggle button: expense active, income active, inactive
+- Transaction item: default, hover
+- Submit button: default, hover
+- Delete/Edit button: default, hover
+- Modal: open state
+
+---
+
+## Mobile Layout (375px)
+- Header stacks title and month filter vertically
+- Summary cards become a 2x2 grid
+- Main layout becomes single column (form on top, charts below, list below that)
+- Charts stack vertically (one per row)
+- Transaction items remain the same design
+
+---
+
+## Assets & Icons
+- Use emoji for category icons (🍔 🚗 💡 🛍 ❤️ 🎮 📚 💼 📦)
+- Use emoji for action buttons (✏️ 🗑️)
+- No external icon library needed
+
+---
+
+## Sample Data to Use in Mockup
+| Name | Category | Amount | Type | Date |
+|---|---|---|---|---|
+| Grocery Shopping | Food | ₹1,200 | Expense | 10 Mar 2026 |
+| Electricity Bill | Bills | ₹850 | Expense | 08 Mar 2026 |
+| Monthly Salary | Salary | ₹45,000 | Income | 01 Mar 2026 |
+| Uber Ride | Transport | ₹320 | Expense | 07 Mar 2026 |
+| Netflix Subscription | Entertainment | ₹649 | Expense | 05 Mar 2026 |
+| Freelance Payment | Salary | ₹12,000 | Income | 03 Mar 2026 |
