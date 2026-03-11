@@ -1,8 +1,4 @@
 import { Expense } from './AddExpenseForm';
-import { Button } from './ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
-import { Badge } from './ui/badge';
 import { Trash2 } from 'lucide-react';
 
 interface ExpenseListProps {
@@ -10,16 +6,28 @@ interface ExpenseListProps {
   onDeleteExpense: (id: string) => void;
 }
 
-const CATEGORY_COLORS: Record<string, string> = {
-  'Food & Dining': 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
-  'Transportation': 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-  'Shopping': 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
-  'Entertainment': 'bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-200',
-  'Bills & Utilities': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-  'Healthcare': 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-  'Education': 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200',
-  'Travel': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-  'Other': 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200',
+const CATEGORY_STYLES: Record<string, string> = {
+  'Food & Dining': 'bg-orange-50 text-orange-700 border-orange-200',
+  'Transportation': 'bg-blue-50 text-blue-700 border-blue-200',
+  'Shopping': 'bg-purple-50 text-purple-700 border-purple-200',
+  'Entertainment': 'bg-pink-50 text-pink-700 border-pink-200',
+  'Bills & Utilities': 'bg-yellow-50 text-yellow-700 border-yellow-200',
+  'Healthcare': 'bg-red-50 text-red-700 border-red-200',
+  'Education': 'bg-indigo-50 text-indigo-700 border-indigo-200',
+  'Travel': 'bg-green-50 text-green-700 border-green-200',
+  'Other': 'bg-gray-50 text-gray-600 border-gray-200',
+};
+
+const CATEGORY_ICONS: Record<string, string> = {
+  'Food & Dining': '🍽️',
+  'Transportation': '🚗',
+  'Shopping': '🛍️',
+  'Entertainment': '🎬',
+  'Bills & Utilities': '⚡',
+  'Healthcare': '🏥',
+  'Education': '📚',
+  'Travel': '✈️',
+  'Other': '📦',
 };
 
 export function ExpenseList({ expenses, onDeleteExpense }: ExpenseListProps) {
@@ -28,71 +36,89 @@ export function ExpenseList({ expenses, onDeleteExpense }: ExpenseListProps) {
   );
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Recent Expenses</CardTitle>
-        <CardDescription>
-          {expenses.length === 0
-            ? 'No expenses yet. Add your first expense above!'
-            : `Showing ${expenses.length} expense${expenses.length !== 1 ? 's' : ''}`}
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        {expenses.length === 0 ? (
-          <div className="text-center py-12 text-gray-500">
-            <p>Start tracking your expenses by adding one above.</p>
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Description</TableHead>
-                  <TableHead>Category</TableHead>
-                  <TableHead className="text-right">Amount</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {sortedExpenses.map((expense) => (
-                  <TableRow key={expense.id}>
-                    <TableCell>
-                      {new Date(expense.date).toLocaleDateString('en-US', {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric',
-                      })}
-                    </TableCell>
-                    <TableCell>
-                      {expense.description || <span className="text-gray-400 italic">No description</span>}
-                    </TableCell>
-                    <TableCell>
-                      <Badge className={CATEGORY_COLORS[expense.category] || CATEGORY_COLORS['Other']}>
-                        {expense.category}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      ${expense.amount.toFixed(2)}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => onDeleteExpense(expense.id)}
-                        className="h-8 w-8 p-0"
-                      >
-                        <Trash2 className="h-4 w-4 text-red-500" />
-                        <span className="sr-only">Delete</span>
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        )}
-      </CardContent>
-    </Card>
+    <div className="border border-border rounded-lg overflow-hidden bg-card">
+      {/* Database header bar */}
+      <div className="px-4 py-2.5 border-b border-border bg-secondary flex items-center gap-2">
+        <span className="text-xs font-medium text-foreground">Transactions</span>
+        <span className="text-xs text-muted-foreground">
+          {expenses.length} {expenses.length === 1 ? 'entry' : 'entries'}
+        </span>
+      </div>
+
+      {expenses.length === 0 ? (
+        <div className="text-center py-16">
+          <p className="text-4xl mb-3">🗒️</p>
+          <p className="text-sm text-muted-foreground">No expenses yet</p>
+          <p className="text-xs text-muted-foreground mt-1 opacity-70">
+            Click "New" to add your first expense
+          </p>
+        </div>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border">
+                <th className="text-left px-4 py-2.5 text-xs font-medium text-muted-foreground uppercase tracking-wider w-[130px]">
+                  Date
+                </th>
+                <th className="text-left px-4 py-2.5 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  Description
+                </th>
+                <th className="text-left px-4 py-2.5 text-xs font-medium text-muted-foreground uppercase tracking-wider w-[190px]">
+                  Category
+                </th>
+                <th className="text-right px-4 py-2.5 text-xs font-medium text-muted-foreground uppercase tracking-wider w-[110px]">
+                  Amount
+                </th>
+                <th className="w-[44px]" />
+              </tr>
+            </thead>
+            <tbody>
+              {sortedExpenses.map((expense) => (
+                <tr
+                  key={expense.id}
+                  className="group border-b border-border last:border-0 hover:bg-secondary transition-colors"
+                >
+                  <td className="px-4 py-3 text-muted-foreground whitespace-nowrap text-xs">
+                    {new Date(expense.date).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                    })}
+                  </td>
+                  <td className="px-4 py-3 text-foreground">
+                    {expense.description || (
+                      <span className="text-muted-foreground italic">—</span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3">
+                    <span
+                      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs border ${
+                        CATEGORY_STYLES[expense.category] || CATEGORY_STYLES['Other']
+                      }`}
+                    >
+                      <span className="leading-none">{CATEGORY_ICONS[expense.category] || '📦'}</span>
+                      {expense.category}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-right font-semibold text-foreground tabular-nums">
+                    ${expense.amount.toFixed(2)}
+                  </td>
+                  <td className="px-2 py-3 text-right">
+                    <button
+                      onClick={() => onDeleteExpense(expense.id)}
+                      className="opacity-0 group-hover:opacity-100 p-1 rounded hover:bg-destructive/10 transition-all"
+                      aria-label="Delete expense"
+                    >
+                      <Trash2 className="h-3.5 w-3.5 text-destructive" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
   );
 }

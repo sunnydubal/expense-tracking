@@ -1,38 +1,44 @@
 import { CATEGORIES } from './AddExpenseForm';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { Label } from './ui/label';
-import { Card, CardContent } from './ui/card';
-import { Filter } from 'lucide-react';
 
 interface ExpenseFilterProps {
   selectedCategory: string;
   onCategoryChange: (category: string) => void;
 }
 
+const CATEGORY_ICONS: Record<string, string> = {
+  'Food & Dining': '🍽️',
+  'Transportation': '🚗',
+  'Shopping': '🛍️',
+  'Entertainment': '🎬',
+  'Bills & Utilities': '⚡',
+  'Healthcare': '🏥',
+  'Education': '📚',
+  'Travel': '✈️',
+  'Other': '📦',
+};
+
 export function ExpenseFilter({ selectedCategory, onCategoryChange }: ExpenseFilterProps) {
+  const allOptions = [
+    { value: 'all', label: 'All', icon: null },
+    ...CATEGORIES.map((c) => ({ value: c, label: c, icon: CATEGORY_ICONS[c] })),
+  ];
+
   return (
-    <Card>
-      <CardContent className="pt-6">
-        <div className="flex items-center gap-4">
-          <Filter className="h-5 w-5 text-gray-500" />
-          <div className="flex-1 space-y-2">
-            <Label htmlFor="filter-category">Filter by Category</Label>
-            <Select value={selectedCategory} onValueChange={onCategoryChange}>
-              <SelectTrigger id="filter-category">
-                <SelectValue placeholder="All Categories" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Categories</SelectItem>
-                {CATEGORIES.map((cat) => (
-                  <SelectItem key={cat} value={cat}>
-                    {cat}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+    <div className="flex items-center gap-1.5 flex-wrap">
+      {allOptions.map(({ value, label, icon }) => (
+        <button
+          key={value}
+          onClick={() => onCategoryChange(value)}
+          className={`inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs font-medium transition-colors ${
+            selectedCategory === value
+              ? 'bg-foreground text-background'
+              : 'bg-secondary text-muted-foreground hover:bg-accent hover:text-foreground'
+          }`}
+        >
+          {icon && <span className="leading-none">{icon}</span>}
+          {label}
+        </button>
+      ))}
+    </div>
   );
 }
